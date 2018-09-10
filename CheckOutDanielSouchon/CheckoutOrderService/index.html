@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="Scripts/jquery-3.0.0.min.js"></script>
+    <link href="Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <input type="hidden" id="hdnOrderID" value="1" />
+    <input type="text" id="searchID" />
+    <button onclick="searchOrder()">Search</button>
+    <button onclick="addOrder()">Add</button>
+    <button onclick="putOrder()">Put</button>
+    <button onclick="deleteOrder()">Delete</button>
+    <h2>Products</h2>
+    <table id="products" class="table"></table>
+    <hr />
+    <h2>Basket</h2>
+    <input type="hidden" id="hdnTotalPrice" value="0.00" />
+    <input type="hidden" id="hdnTotalQuantity" value="0" />
+    <table id="basket" class="table">
+        <thead>
+            <tr>
+                <th>
+                    Product
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Quantity
+                </th>
+            </tr>
+        </thead>
+        <tr id="totalRow">
+            <td colspan="3"><b>Total</b></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            alert("hi");
+            $.getJSON("api/Product", function (result) {
+                debugger;
+                alert(result);
+                $.each(result, function (key, product) {
+                    // Add a list item for the product.
+                    //$('<div>', { text: formatItem(product) }).appendTo($('#products'));
+
+                    var $tr = $('<tr>').append(
+                   $('<td id="productName' + product.ID + '">').text(product.ProductName),
+                   $('<td id="productDescription' + product.ID + '">').text(product.Description),
+                   $('<td id="productPrice' + product.ID + '">').text(product.Price),
+                   $('<td>').html('<input type="button" class="button" onclick="addOrderItem(this)" id=' + product.ID + ' value="+"/>')
+               );
+                    $tr.appendTo($('#products'));
+
+                });
+            });
+
+
+        });
+
+
+
+        function formatItem(product) {
+            return product.ProductName + ' - ' + product.Description + ': $' + product.Price;
+        }
+        function addToBasket(el) {
+            var id = $(el).attr('id');
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "http://localhost:61263/api/Product/" + id,
+                success: function (result) {
+                  
+                        var $tr = $('<tr>').append(
+                       $('<td id="prod"'+ result.ID +'>').text(result.ProductName),
+                       $('<td>').text(result.Description),
+                       $('<td>').text(result.Price),
+                       $('<td>').html('<input type="button" class="button" onclick="removeItem(this)" id=' + result.ID + ' value="-"/>')
+                        );
+                        $tr.appendTo($('#basket'));
+
+
+                }
+            });
+        }
+
+
+        function searchOrder() {
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "http://localhost:61263/api/Order/" + $("#searchID").val(),
+                success: function (result) {
+                    console.info(result);
+                }
+            });
+        }
+
+        function addOrderItem(el) {
+
+            var orderid = $("#hdnOrderID").val();
+            var productid = $(el).attr('id');
+            var quantity = 1;
+
+
+            var newOrderItem = {
+                "OrderID": orderid,
+                "ProductID": productid,
+                "Quantity": quantity
+            }
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "http://localhost:61263/api/OrderItem",
+                data: newOrderItem,
+                success: function (result) {
+                    var totalPrice = parseFloat($('#hdnTotalPrice').val());
+                    var totalQty = parseInt($('#hdnTotalQuantity').val());
+                    $.each(result, function (key, oi) {
+                        // Add a list item for the product.
+                        //$('<div>', { text: formatItem(product) }).appendTo($('#products'));
+
+
+
+                        totalPrice = totalPrice + parseFloat($('#productPrice' + oi.ProductID).html());
+                        totalQty = totalQty + 1;
+
+                        $('#hdnTotalPrice').val(totalPrice);
+                        $('#hdnTotalQuantity').val(totalQty);
+
+                        var $tr = $('<tr id="orderItemRow' + oi.ID +'">').append(
+
+                       $('<td>').text($('#productName' + oi.ProductID).html()),
+                       $('<td>').text($('#productDescription' + oi.ProductID).html()),
+                       $('<td>').text($('#productPrice' + oi.ProductID).html()),
+
+                       $('<td>').text(oi.Quantity),
+                       $('<input type="hidden">').val(oi.ID),
+                       $('<input type="hidden">').val(oi.OrderID),
+                       $('<input type="hidden">').val(oi.ProductID),
+                       $('<td>').html('<input type="button" class="button" onclick="deleteOrderItem(this)" id=' + oi.ID + ' value="-"/>')
+                   );
+                        $tr.appendTo($('#basket'));
+
+                    });
+
+                    $('#totalRow').remove();
+                    var $ttr = $('<tr id="totalRow">').append(
+                        $('<td colspan="2"><b>').text('Total'),
+                        $('<td>').text(totalPrice),
+                        $('<td>').text(totalQty)
+
+                        );
+                    $ttr.appendTo($('#basket'));
+                }
+            });
+        }
+
+
+        function deleteOrderItem(el) {
+            var id = $(el).attr('id');
+            $.ajax({
+                type: "DELETE",
+                dataType: "json",
+                url: "http://localhost:61263/api/OrderItem/" + id,
+                success: function (result) {
+                    console.info(result);
+                    $('#orderItemRow' + id).remove();
+                    var totalPrice = parseFloat($('#hdnTotalPrice').val());
+                    var totalQty = parseInt($('#hdnTotalQuantity').val());
+                    alert(totalPrice);
+                    totalPrice = totalPrice - parseFloat($('#productPrice' + id).html());
+                    totalQty = totalQty - 1;
+
+                    alert(totalPrice);
+
+                    $('#hdnTotalPrice').val(totalPrice);
+                    $('#hdnTotalQuantity').val(totalQty);
+
+                    $('#totalRow').remove();
+                    var $ttr = $('<tr id="totalRow">').append(
+                        $('<td colspan="2"><b>').text('Total'),
+                        $('<td>').text(totalPrice),
+                        $('<td>').text(totalQty)
+
+                        );
+                    $ttr.appendTo($('#basket'));
+
+
+                }
+            });
+        }
+
+
+
+        function deleteOrder() {
+            $.ajax({
+                type: "DELETE",
+                dataType: "json",
+                url: "http://localhost:61263/api/Order/0",
+                success: function (result) {
+                    console.info(result);
+                }
+            });
+        }
+
+        function putOrder() {
+            var changedOrder = {
+                "FirstName": "Spiderman",
+                "LastName": "Stark"
+            }
+
+            $.ajax({
+                type: "PUT",
+                dataType: "json",
+                url: "http://localhost:61263/api/Order/0",
+                data: changedOrder,
+                success: function (result) {
+                    console.info(result);
+                }
+            });
+        }
+
+        function addOrder() {
+            var newOrder = {
+                "Id": 0,
+                "FirstName": "TonyEAS",
+                "LastName": "StarkASA"
+            }
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "http://localhost:61263/api/OrderEF",
+                data: newOrder,
+                success: function (result) {
+                    console.info(result);
+                }
+            });
+        }
+
+    </script>
+
+
+
+
+</body>
+</html>
