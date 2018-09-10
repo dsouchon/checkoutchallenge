@@ -1,0 +1,11 @@
+Checkout Challenge Solution
+
+Consists of:
+
+1. CheckoutOrderService
+
+2. CheckoutAPIClientLibrary
+
+3. CheckoutDataAccess
+
+4. UnitTestProject1	
