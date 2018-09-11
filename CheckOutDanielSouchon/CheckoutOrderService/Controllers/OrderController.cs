@@ -9,19 +9,17 @@ using System.Web.Http.Cors;
 
 using CheckoutDataAccess;
 
-namespace WebApplication9.Controllers
+namespace CheckoutOrderService.Controllers
 {
+
+    /// <summary>
+    /// Web Api 2 Controller for Orders
+    /// </summary>
     [EnableCorsAttribute("*", "*", "*")]
     [RoutePrefix("api/Order")]
     public class OrderController : ApiController
     {
-        //Order[] orders = new Order[]
-        //   {
-        //    new Order { ID = 1, UserName = "daniel@gmail.com", DateCreated=DateTime.Now },
-        //    new Order { ID = 2, UserName = "mary@gmail.com", DateCreated=DateTime.Now },
-        //    new Order { ID = 3, UserName = "bob@gmail.com", DateCreated=DateTime.Now },
-        //   };
-
+    
 
         // GET: api/Order
         [Route("")]

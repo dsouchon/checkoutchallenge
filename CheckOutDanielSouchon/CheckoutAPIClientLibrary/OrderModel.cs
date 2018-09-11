@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CheckoutAPIClientLibrary
 {
+    /// <summary>
+    /// Model for the Order / Basket
+    /// </summary>
     public class OrderModel
     {
 

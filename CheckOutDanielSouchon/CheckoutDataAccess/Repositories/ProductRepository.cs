@@ -8,7 +8,11 @@ using System.Web.Http.Cors;
 
 namespace CheckoutDataAccess.Repositories
 {
+    /// <summary>
+    /// CRUD repository for Products
+    /// </summary>
     [EnableCors(origins: "http://localhost:22414", headers: "*", methods: "*")]
+    
     public static class ProductRepository
     {
 

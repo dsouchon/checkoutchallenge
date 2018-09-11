@@ -4,9 +4,13 @@ using System.Collections.Generic;
 
 namespace UnitTestProject1
 {
+    /// <summary>
+    /// Unit tests to demonstrate the Checkout API Client Library
+    /// </summary>
     [TestClass]
     public class UnitTest1
     {
+        
         public  static CheckoutAPIClientLibrary.OrderModel Order { get; set; }
         public static CheckoutAPIClientLibrary.ProductModel Product {get;set;}
         public CheckoutAPIClientLibrary.OrderItemModel OrderItem { get; set; }

@@ -9,8 +9,11 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 
 
-namespace WebApplication9.Controllers
+namespace CheckoutOrderService.Controllers
 {
+    /// <summary>
+    /// Web Api 2 Controller for Products
+    /// </summary>
     [EnableCorsAttribute("*", "*", "*")]
     [RoutePrefix("api/Product")]
     public class ProductController : ApiController

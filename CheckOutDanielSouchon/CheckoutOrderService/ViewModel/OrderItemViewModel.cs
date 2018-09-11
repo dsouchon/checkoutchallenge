@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace WebApplication9.ViewModel
+namespace CheckoutOrderService.ViewModel
 {
+    /// <summary>
+    /// ViewModel for Order Item to include Product and Order properties for display
+    /// </summary>
     public class OrderItemViewModel
     {
 

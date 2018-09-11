@@ -14,6 +14,11 @@ namespace CheckoutAPIClientLibrary
     {
         private static readonly HttpClient client = new HttpClient();
 
+        /// <summary>
+        /// Add a product to the product catalog
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         public ProductModel CreateProduct(ProductModel product)
         {
             var url = $"http://localhost:61263/api/Product";
@@ -32,7 +37,11 @@ namespace CheckoutAPIClientLibrary
             return resultObject;
 
         }
-
+        /// <summary>
+        /// Retrieve an order 
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
         public OrderModel GetOrder(int? orderid)
         {
             var url = $"http://localhost:61263/api/Order/{orderid}";
@@ -45,7 +54,11 @@ namespace CheckoutAPIClientLibrary
             return resultObject;
 
         }
-
+        /// <summary>
+        /// Retrieve all the items in an order
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
         public List<OrderItemModel> GetOrderItems(int orderid)
         {
             var url = $"http://localhost:61263/api/orderitem/getfororder/{orderid}";
@@ -59,7 +72,11 @@ namespace CheckoutAPIClientLibrary
 
         }
 
-
+        /// <summary>
+        /// Create a new order for a logged in user
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns></returns>
         public OrderModel CreateOrder(OrderModel order)
         {
             var url = $"http://localhost:61263/api/Order";
@@ -79,6 +96,11 @@ namespace CheckoutAPIClientLibrary
 
         }
 
+        /// <summary>
+        /// Add an item to an existing order basket
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public OrderItemModel CreateOrderItem(OrderItemModel item)
         {
             var url = $"http://localhost:61263/api/OrderItem";
@@ -97,7 +119,12 @@ namespace CheckoutAPIClientLibrary
             return resultObject;
 
         }
-
+        /// <summary>
+        /// For changing properties of an item in the order basket
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public OrderItemModel UpdateOrderItem(int id, OrderItemModel item)
         {
             var url = $"http://localhost:61263/api/OrderItem/{id}";
@@ -117,7 +144,11 @@ namespace CheckoutAPIClientLibrary
 
         }
 
-
+        /// <summary>
+        /// Deletes all the items in the basket
+        /// </summary>
+        /// <param name="orderid"></param>
+        /// <returns></returns>
         public string DeleteOrderItems(int orderid)
         {
             StringBuilder resultSb = new StringBuilder();
@@ -140,7 +171,11 @@ namespace CheckoutAPIClientLibrary
             return resultSb.ToString();
 
         }
-
+        /// <summary>
+        /// Remove an item from the order basket
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public string DeleteOrderItem(int id)
         {
             var url = $"http://localhost:61263/api/OrderItem/{id}";

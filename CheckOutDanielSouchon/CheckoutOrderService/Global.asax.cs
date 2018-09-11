@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Security;
 using System.Web.SessionState;
-using WebApplication9.App_Start;
+using CheckoutOrderService.App_Start;
 
-namespace WebApplication9
+namespace CheckoutOrderService
 {
     public class Global : System.Web.HttpApplication
     {

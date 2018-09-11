@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CheckoutDataAccess.Repositories
 {
+    /// <summary>
+/// CRUD repository for order items
+/// </summary>
     public static class OrderItemRepository
     {
 

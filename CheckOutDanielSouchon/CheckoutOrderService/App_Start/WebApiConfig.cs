@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
-namespace WebApplication9.App_Start
+namespace CheckoutOrderService.App_Start
 {
     public class WebApiConfig
     {

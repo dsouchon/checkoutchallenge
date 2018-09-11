@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CheckoutAPIClientLibrary
 {
+    /// <summary>
+    /// Model for the item in a basket
+    /// </summary>
     public class OrderItemModel
     {
         public int ID { get; set; }
